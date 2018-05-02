@@ -6,7 +6,7 @@
 
 ![Application Name](../_static/img/auth-discord/create-app.png)
 
-3. Set your redirect URI to your externally visible hostname, ending with `/auth_callback` - to make sure RocketMap receives the authentication codes.
+3. Set your redirect URI to your externally visible hostname (`--external-hostname`), ending with `/auth_callback` - to make sure RocketMap receives the authentication codes.
 
 ![Application Redirect URI](../_static/img/auth-discord/auth-callback.png)
 
@@ -40,7 +40,7 @@
 
 **That's it!** Now you can start your bot and enjoy chatting!
 
-**IMPORTANT: you should NEVER give your bot's token to anybody you do not trust, and never EVER under any circumstances push it to a public Git repo where everyone can see it.** The token gives you full access to your bot account's permissions, so if somebody gains access to it maliciously they could do any number of bad things with the bot -- this includes leaving all of its guilds (servers), spamming unfavorable links or messages in text channels, deleting messages/channels in guilds where it has moderator permissions, and other nasty stuff along those lines. Keep it a secret! 
+**IMPORTANT: you should NEVER give your bot's token to anybody you do not trust, and never EVER under any circumstances push it to a public Git repository where everyone can see it.** The token gives you full access to your bot account's permissions, so if somebody gains access to it maliciously they could do any number of bad things with the bot -- this includes leaving all of its guilds (servers), spamming unfavorable links or messages in text channels, deleting messages/channels in guilds where it has moderator permissions, and other nasty stuff along those lines. Keep it a secret! 
 ## Compromised client secret or bot token 
 If your API client secret or bot token ever does get compromised, or you suspect it has been, the very first thing you should do is [go to its Discord Apps page](https://discordapp.com/developers/applications/me) and generate new ones.
 
