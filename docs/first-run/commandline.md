@@ -47,9 +47,16 @@
                     [-tp TRUSTED_PROXIES] [--api-version API_VERSION]
                     [--no-file-logs] [--log-path LOG_PATH] 
                     [--log-filename LOG_FILENAME] [--dump] [-exg]
-
                     [-v | --verbosity VERBOSE] [-Rh RARITY_HOURS]
                     [-Rf RARITY_UPDATE_FREQUENCY]
+                    [-UA] [-UAsk USER_AUTH_SECRET_KEY]
+                    [-UAcid USER_AUTH_CLIENT_ID]
+                    [-UAcs USER_AUTH_CLIENT_SECRET] [-UAh USER_AUTH_HOSTNAME]
+                    [-UAgr USER_AUTH_GUILD_REQUIRED]
+                    [-UAgi USER_AUTH_GUILD_INVITE]
+                    [-UArr USER_AUTH_ROLE_REQUIRED]
+                    [-UAri USER_AUTH_ROLE_INVITE] [-UAbt USER_AUTH_BOT_TOKEN]
+
 
 Args that start with '--' (eg. -a) can also be set in a config file
 (config/config.ini or specified via -cf or -scf). The recognized syntax
@@ -447,3 +454,37 @@ environment variables which override config file values which override defaults.
                              How often (in minutes) the dynamic rarity should be
                              updated. Decimals allowed. Default: 0. 0 to disable.
                              [env var: POGOMAP_RARITY_UPDATE_FREQUENCY]
+
+    Discord User Authentication:
+      -UA, --user-auth      Require end-users to authenticate using Discord.
+                            [env var: POGOMAP_USER_AUTH]
+      -UAsk USER_AUTH_SECRET_KEY, --user-auth-secret-key USER_AUTH_SECRET_KEY
+                            Secret key to encrypt session cookies. Use a randomly
+                            generated string. [env var:
+                            POGOMAP_USER_AUTH_SECRET_KEY]
+      -UAcid USER_AUTH_CLIENT_ID, --user-auth-client-id USER_AUTH_CLIENT_ID
+                            Discord Client ID for user authentication. [env var:
+                            POGOMAP_USER_AUTH_CLIENT_ID]
+      -UAcs USER_AUTH_CLIENT_SECRET, --user-auth-client-secret USER_AUTH_CLIENT_SECRET
+                            Discord Client secret for user authentication. [env
+                            var: POGOMAP_USER_AUTH_CLIENT_SECRET]
+      -UAh USER_AUTH_HOSTNAME, --user-auth-hostname USER_AUTH_HOSTNAME
+                            Hostname override for user authentication. [env var:
+                            POGOMAP_USER_AUTH_HOSTNAME]
+      -UAgr USER_AUTH_GUILD_REQUIRED, --user-auth-guild-required USER_AUTH_GUILD_REQUIRED
+                            Discord Guild the users must join to be able to access
+                            the map. [env var: POGOMAP_USER_AUTH_GUILD_REQUIRED]
+      -UAgi USER_AUTH_GUILD_INVITE, --user-auth-guild-invite USER_AUTH_GUILD_INVITE
+                            Invitation link for the required guild. [env var:
+                            POGOMAP_USER_AUTH_GUILD_INVITE]
+      -UArr USER_AUTH_ROLE_REQUIRED, --user-auth-role-required USER_AUTH_ROLE_REQUIRED
+                            Discord Guild Role IDs the users are required to have
+                            at least one in order to access the map. [env var:
+                            POGOMAP_USER_AUTH_ROLE_REQUIRED]
+      -UAri USER_AUTH_ROLE_INVITE, --user-auth-role-invite USER_AUTH_ROLE_INVITE
+                            Invitation link for the required role. [env var:
+                            POGOMAP_USER_AUTH_ROLE_INVITE]
+      -UAbt USER_AUTH_BOT_TOKEN, --user-auth-bot-token USER_AUTH_BOT_TOKEN
+                            Discord Bot Token required for fetching user roles
+                            within the required Guild. [env var:
+                            POGOMAP_USER_AUTH_BOT_TOKEN]
