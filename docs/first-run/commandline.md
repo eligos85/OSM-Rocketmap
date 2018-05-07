@@ -53,6 +53,7 @@
                     [-Rf RARITY_UPDATE_FREQUENCY] [-Rfn RARITY_FILENAME]
                     [-SPp STATUS_PAGE_PASSWORD] [-SPf STATUS_PAGE_FILTER]
                     [-UA] [-UAv USER_AUTH_VALIDITY]
+                    [-UAbc USER_AUTH_BLOCK_CONCURRENT]
                     [-UAsk USER_AUTH_SECRET_KEY] [-UAcid USER_AUTH_CLIENT_ID]
                     [-UAcs USER_AUTH_CLIENT_SECRET]
                     [-UAbt USER_AUTH_BOT_TOKEN]
@@ -508,6 +509,10 @@ environment variables which override config file values which override defaults.
                             Check every X hours if user authentication is still
                             valid and refresh access token. [env var:
                             POGOMAP_USER_AUTH_VALIDITY]
+      -UAbc USER_AUTH_BLOCK_CONCURRENT, --user-auth-block-concurrent USER_AUTH_BLOCK_CONCURRENT
+                            Block user access for X hours if concurrent logins are
+                            detected. Default: 0 (disabled). [env var:
+                            POGOMAP_USER_AUTH_BLOCK_CONCURRENT]
       -UAsk USER_AUTH_SECRET_KEY, --user-auth-secret-key USER_AUTH_SECRET_KEY
                             Secret key to encrypt session cookies. Use a randomly
                             generated string. [env var:
