@@ -154,7 +154,21 @@ class Pokemon(LatLongModel):
     def get_active(swLat, swLng, neLat, neLng, timestamp=0, oSwLat=None,
                    oSwLng=None, oNeLat=None, oNeLng=None, exclude=None):
         now_date = datetime.utcnow()
-        query = Pokemon.select()
+
+        if args.hide_encounters:
+            query = Pokemon.select(
+                Pokemon.encounter_id,
+                Pokemon.spawnpoint_id,
+                Pokemon.pokemon_id,
+                Pokemon.latitude,
+                Pokemon.longitude,
+                Pokemon.disappear_time,
+                Pokemon.weather_boosted_condition,
+                Pokemon.last_modified
+            )
+
+        else:
+            query = Pokemon.select()
 
         if exclude:
             query = query.where(Pokemon.pokemon_id.not_in(list(exclude)))
@@ -375,7 +389,7 @@ class Pokestop(LatLongModel):
                 p['latitude'], p['longitude'] = \
                     transform_from_wgs_to_gcj(p['latitude'], p['longitude'])
             pokestops.append(p)
-        
+
         return pokestops
 
     @staticmethod
@@ -388,17 +402,17 @@ class Pokestop(LatLongModel):
         query = Pokestop.select(Pokestop.active_fort_modifier,
                                 Pokestop.enabled, Pokestop.latitude,
                                 Pokestop.longitude, Pokestop.last_modified,
-                                Pokestop.lure_expiration, Pokestop.pokestop_id, 
+                                Pokestop.lure_expiration, Pokestop.pokestop_id,
                                 Trs_Quest.quest_type, Trs_Quest.quest_stardust, Trs_Quest.quest_pokemon_id,
                                 Trs_Quest.quest_reward_type, Trs_Quest.quest_item_id, Trs_Quest.quest_item_amount,
                                 Trs_Quest.quest_target, Trs_Quest.quest_timestamp, Pokestop.name, Pokestop.image)
-                                
+
         query = (query
                     .join(Trs_Quest, JOIN.LEFT_OUTER,
                     on=(Pokestop.pokestop_id == Trs_Quest.GUID))
                 )
-                             
-            
+
+
 
         if not (swLat and swLng and neLat and neLng):
             query = (query
@@ -467,16 +481,16 @@ class Pokestop(LatLongModel):
             if args.china:
                 p['latitude'], p['longitude'] = \
                     transform_from_wgs_to_gcj(p['latitude'], p['longitude'])
-            
+
             p['quest_raw'] = generate_quest(p)
-            
+
             pokestops.append(p)
-            
+
         # Re-enable the GC.
         gc.enable()
         return pokestops
-     
-    @staticmethod   
+
+    @staticmethod
     def get_quest(GUID):
         query = (Trs_Quest
                     .select()
@@ -778,7 +792,7 @@ class Trs_Quest(BaseModel):
     quest_item_amount = Utf8mb4CharField(max_length=2)
     quest_target = Utf8mb4CharField(max_length=3)
     quest_timestamp = FloatField()
-    
+
     @staticmethod
     def get_quests():
         query = (Trs_Quest
