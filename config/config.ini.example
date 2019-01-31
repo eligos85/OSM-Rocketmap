@@ -10,7 +10,7 @@
 
 #pgpool-url:                    # Address of PGPool to load accounts from and/or update their details. Required for PGPool.
                                 # e.g. http://127.0.0.1:4242 (default=None)
-#pgscout-url:                   # Address of PGScout to perform encounters. Required for PGScout. 
+#pgscout-url:                   # Address of PGScout to perform encounters. Required for PGScout.
                                 # e.g. http://127.0.0.1:4243/iv (default=None)
 #rareless-scans-threshold:      # Mark an account as shadowbanned after this many rareless scans. PGPool required. (default=10)
 #rotate-blind                   # Rotate out shadowbanned accounts. PGPool required.
@@ -35,6 +35,7 @@
 # Common settings
 #################
 
+#mapname:                       # Name for the map in the HTML view
 #host:                          # Address to listen on (default='127.0.0.1')
 #port:                          # Port to listen on (default=5000)
 #external-hostname:             # Hostname used for external requests.

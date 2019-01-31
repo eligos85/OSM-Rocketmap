@@ -86,6 +86,7 @@ class Pogom(Flask):
         self.json_encoder = CustomJSONEncoder
         self.route("/", methods=['GET'])(self.fullmap)
         self.route("/auth_callback", methods=['GET'])(self.auth_callback)
+        self.route("/auth_logout", methods=['GET'])(self.auth_logout)
         self.route("/raw_data", methods=['GET'])(self.raw_data)
         self.route("/loc", methods=['GET'])(self.loc)
         self.route("/next_loc", methods=['POST'])(self.next_loc)
@@ -414,7 +415,8 @@ class Pogom(Flask):
             generateImages=str(args.generate_images).lower(),
             lang=args.locale,
             show=visibility_flags,
-            rarityFileName=args.rarity_filename)
+            rarityFileName=args.rarity_filename,
+            mapname=args.mapname)
 
     def raw_data(self):
         # Make sure fingerprint isn't blacklisted.
@@ -460,7 +462,7 @@ class Pogom(Flask):
         lastpokemon = request.args.get('lastpokemon')
         lastslocs = request.args.get('lastslocs')
         lastspawns = request.args.get('lastspawns')
-        
+
         if request.args.get('luredonly') == '0':
             luredonly = False
         elif request.args.get('luredonly') == '1':
@@ -564,7 +566,7 @@ class Pogom(Flask):
                                            oSwLat=oSwLat, oSwLng=oSwLng,
                                            oNeLat=oNeLat, oNeLng=oNeLng,
                                            lured=luredonly))
-                                           
+
         #d['quests'] = Trs_Quest.get_quests()
 
         if request.args.get('gyms', 'true') == 'true' and not args.no_gyms:
@@ -740,7 +742,8 @@ class Pogom(Flask):
             lat=self.current_location[0],
             lng=self.current_location[1],
             generateImages=str(args.generate_images).lower(),
-            show=visibility_flags)
+            show=visibility_flags,
+            mapname=args.mapname)
 
     def get_gymdata(self):
         gym_id = request.args.get('id')

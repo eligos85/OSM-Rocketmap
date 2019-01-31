@@ -260,6 +260,9 @@ def get_args():
                         help=('Locale for Pokemon names (check' +
                               ' static/dist/locales for more).'),
                         default='en')
+    parser.add_argument('-mn', '--mapname',
+                        help=('Name for the map in the HTML'),
+                        type=str, default='RocketMap')
     parser.add_argument('-eh', '--external-hostname',
                         help='Hostname used for external requests.',
                         default="http://127.0.0.1:5000")
