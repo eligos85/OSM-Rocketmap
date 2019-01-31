@@ -272,9 +272,6 @@ def get_args():
     parser.add_argument('-hdy', '--hidestyles',
                         help='Hides style settings submenu.',
                         action='store_true', default=False)
-    parser.add_argument('-hide', '--hide-encounters',
-                        help='Hide the encounter stats from the web',
-                        action='store_true', default=False)
     parser.add_argument('-mn', '--mapname',
                         help=('Name for the map in the HTML'),
                         type=str, default='RocketMap')
@@ -1049,10 +1046,6 @@ def init_args(args):
         log.info("Watching encounter whitelist file {} for changes.".format(
             args.enc_whitelist_file))
         watchercfg['enc_whitelist'] = (args.enc_whitelist_file, None)
-
-    # Add logging when hide-encounters is enabled in config.ini
-    if args.hide_encounters:
-        log.info('Encounter stats disabled on front-end.')
 
     # Prepare webhook whitelist - empty list means no restrictions
     args.webhook_whitelist = []

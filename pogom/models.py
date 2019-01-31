@@ -154,31 +154,7 @@ class Pokemon(LatLongModel):
     def get_active(swLat, swLng, neLat, neLng, timestamp=0, oSwLat=None,
                    oSwLng=None, oNeLat=None, oNeLng=None, exclude=None):
         now_date = datetime.utcnow()
-
-        if args.hide_encounters:
-            query = Pokemon.select(
-                Pokemon.encounter_id,
-                Pokemon.spawnpoint_id,
-                Pokemon.pokemon_id,
-                Pokemon.latitude,
-                Pokemon.longitude,
-                Pokemon.disappear_time,
-                Pokemon.weight,
-                Pokemon.height,
-                Pokemon.gender,
-                Pokemon.form,
-                Pokemon.costume,
-                Pokemon.catch_prob_1,
-                Pokemon.catch_prob_2,
-                Pokemon.catch_prob_3,
-                Pokemon.rating_attack,
-                Pokemon.rating_defense,
-                Pokemon.weather_boosted_condition,
-                Pokemon.last_modified
-            )
-
-        else:
-            query = Pokemon.select()
+        query = Pokemon.select()
 
         if exclude:
             query = query.where(Pokemon.pokemon_id.not_in(list(exclude)))
