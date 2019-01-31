@@ -997,8 +997,45 @@ function gymLabel(gym, includeMembers = true) {
         </div>`
 }
 
-function pokestopLabel(expireTime, latitude, longitude) {
+function pokestopLabel(expireTime, latitude, longitude, quest, questtype) {
     var str
+	var questtext = ""
+	console.log(quest)
+	if (quest['is_quest']) {
+		
+		switch(quest['quest_reward_type_raw']) {
+			
+		case '2':
+			var image = 'static/quest/reward_' + quest['item_id'] + '_1.png'
+			var rewardtext = i8ln(quest['item_type']) + '<br>' + i8ln('Pieces') +': ' + quest['item_amount']
+			var width = 40
+			break
+		case '3':
+			var image = 'static/quest/reward_stardust.png'
+			var rewardtext = i8ln(quest['item_type']) + '<br>' + i8ln('Amount') +': ' + quest['item_amount']
+			var width = 40
+			break
+		case '7':
+			var pokemon_id = quest['pokemon_id']
+			if (generateImages) {
+				image = `pkm_img?pkm=${pokemon_id}`
+			} else {
+				image = pokemonSprites(quest['pokemon_id']).filename
+
+			}
+			var rewardtext = quest['quest_pokemon_name']
+                        var width = 40
+			break
+		}
+
+		var questtext = i8ln(quest['quest_type_raw'])
+                questtext = questtext.replace('{0}', quest['quest_target'])
+		
+		questtext = '<center><br><b>' + questtext + '</b><br><img src=' + image + ' width=' + width + '><br>' + rewardtext + '</center>'
+		
+		//questtext = '<center>' + quest['quest_type'] + '</center>'
+		
+	}
     if (expireTime) {
         str = `
             <div>
@@ -1024,6 +1061,9 @@ function pokestopLabel(expireTime, latitude, longitude) {
               </div>
               <div>
                 <img class='pokestop sprite' src='static/images/pokestop//Pokestop.png'>
+              </div>
+              <div>
+                ${questtext}
               </div>
               <div>
                 <span class='pokestop navigate'><a href='javascript:void(0);' onclick='javascript:openMapDirections(${latitude},${longitude});' title='Open in Google Maps'; class='pokestop nolure'>${latitude.toFixed(6)}, ${longitude.toFixed(7)}</a></span>
@@ -1398,19 +1438,69 @@ function updateGymMarker(item, marker) {
 }
 
 function setupPokestopMarker(item) {
-    var imagename = item['lure_expiration'] ? 'PokestopLured' : 'Pokestop'
-    var icon = L.icon({
-        iconUrl: 'static/images/pokestop/' + imagename + '.png',
-        iconSize: [32, 32]
-    })
 
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: item['lure_expiration'] ? 3 : 2}).bindPopup(pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude']))
+    var icon = build_quest_small(item['quest_raw']['quest_reward_type_raw'], item['quest_raw']['item_id'], item['quest_raw']['pokemon_id'], item['lure_expiration'])	
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: item['lure_expiration'] ? 3 : 2}).bindPopup(pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['quest_raw'], item['quest_type']))
     markers.addLayer(marker)
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
     }
     addListeners(marker)
     return marker
+}
+
+function build_quest_small(quest_reward_type_raw, quest_item_id, quest_pokemon_id, lure){
+
+	var image
+	var size
+	var anchor
+	
+	if (quest_reward_type_raw == null) {
+		quest_reward_type_raw == '0'
+	}
+	
+	switch(quest_reward_type_raw) {
+		
+	case '2':
+		image = 'static/quest/reward_' + quest_item_id + '_1.png'
+		size = [30, 30]
+		anchor = [30, 20]
+		break
+	case '3':
+		image = 'static/quest/reward_stardust.png'
+		size = [30, 30]
+		anchor = [30, 20]
+		break
+	case '7':
+		var formParam = '';
+		if (quest_pokemon_id === '327') {
+			let formParam = `&form=11`
+
+		}
+		if (generateImages) {
+			image = `pkm_img?pkm=${quest_pokemon_id}${formParam}`
+			size = [35, 35]
+			anchor = [30, 30]
+		} else {
+			image = pokemonSprites(quest_pokemon_id).filename
+			size = [40, 40]
+			anchor = [30, 30]
+		}
+		break
+	}
+	
+	var imagename = quest_reward_type_raw ? 'PokestopQuest' : 'Pokestop'
+	var imagename = lure ? 'PokestopLured' : imagename
+	
+	var icon =  L.icon({
+        iconUrl: 'static/images/pokestop/' + imagename + '.png',
+        iconSize: [32, 32],
+		shadowUrl: image,
+		shadowSize: size,
+		shadowAnchor: anchor
+	})
+	
+	return icon;
 }
 
 
@@ -1729,7 +1819,7 @@ function loadRawData() {
     var loadPokestops = Store.get('showPokestops')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
-    var loadLuredOnly = Boolean(Store.get('showLuredPokestopsOnly'))
+    var loadLuredOnly = Store.get('showLuredPokestopsOnly')
     var loadWeather = Store.get('showWeatherCells')
     var loadS2Cells = Store.get('showS2Cells')
     var loadWeatherAlerts = Store.get('showWeatherAlerts')
@@ -1918,9 +2008,12 @@ function processPokestop(i, item) {
         return false
     }
 
-    if (Store.get('showLuredPokestopsOnly') && !item['lure_expiration']) {
+    if (Store.get('showLuredPokestopsOnly') == 1 && !item['lure_expiration']) {
         return true
-    }
+	}
+    //if (Store.get('showLuredPokestopsOnly') == 2 && !item['quest_raw']) {
+    //    return true
+		//}
 
     if (!mapData.pokestops[item['pokestop_id']]) { // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
@@ -1965,9 +2058,25 @@ function updatePokestops() {
     })
 
     // remove unlured stops if show lured only is selected
-    if (Store.get('showLuredPokestopsOnly')) {
+    if (Store.get('showLuredPokestopsOnly') == 1) {
         $.each(mapData.pokestops, function (key, value) {
             if (!value['lure_expiration']) {
+                removeStops.push(key)
+            }
+        })
+        $.each(removeStops, function (key, value) {
+            if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
+                if (mapData.pokestops[value].marker.rangeCircle) {
+                    markers.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                }
+                markers.removeLayer(mapData.pokestops[value].marker)
+                delete mapData.pokestops[key]
+            }
+        })
+    }
+    if (Store.get('showLuredPokestopsOnly') == 2) {
+        $.each(mapData.pokestops, function (key, value) {
+            if (!value['quest_raw']['is_quest']) {
                 removeStops.push(key)
             }
         })
