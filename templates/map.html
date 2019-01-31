@@ -53,6 +53,7 @@
       <!-- NAV -->
       <nav id="nav">
         <div id="nav-accordion">
+          {% if show.hidemarkers %}
           <h3><i class="fa fa-map-marker fa-fw"></i>Marker Settings</h3>
           <div>
 
@@ -330,7 +331,8 @@
                 </div>
             </div>
           </div>
-
+          {% endif %}
+    {% if show.hidesearch %}
           <h3><i class="fa fa-location-arrow fa-fw"></i>Location &amp; Search Settings</h3>
           <div>
               {% if show.fixed_display %}
@@ -406,7 +408,9 @@
             </div>
               {% endif %}
           </div>
+          {% endif %}
 
+      		  {% if show.hidenotifications %}
             {% if show.pokemons %}
           <h3><i class="fa fa-bullhorn fa-fw"></i>Notification Settings</h3>
           <div>
@@ -548,6 +552,8 @@
           </div>
           </div>
             {% endif %}
+            {% endif %}
+{% if show.hidestyles %}
           <h3><i class="fa fa-map-o fa-fw"></i>Style Settings</h3>
           <div>
             <div class="form-control switch-container">
@@ -580,6 +586,7 @@
               <select name="locationmarker-style" id="locationmarker-style"></select>
             </div>
           </div>
+    		  {% endif %}
         </div>
       <div>
         <center><button class="settings" onclick="downloadSettings('RocketMap', JSON.stringify(localStorage))"><i class="fa fa-upload fa-fw"></i>Export Settings</button></center>

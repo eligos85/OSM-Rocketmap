@@ -393,7 +393,11 @@ class Pogom(Flask):
             'fixed_display': not args.fixed_location,
             'custom_css': args.custom_css,
             'custom_js': args.custom_js,
-            'medalpokemon': args.medalpokemon
+            'medalpokemon': args.medalpokemon,
+            'hidemarkers': not args.hidemarkers,
+            'hidesearch': not args.hidesearch,
+            'hidenotifications': not args.hidenotifications,
+            'hidestyles': not args.hidestyles
         }
 
         map_lat = False
@@ -416,7 +420,11 @@ class Pogom(Flask):
             lang=args.locale,
             show=visibility_flags,
             rarityFileName=args.rarity_filename,
-            mapname=args.mapname)
+            mapname=args.mapname,
+            hidesearch=args.hidesearch,
+            hidemarkers=args.hidemarkers,
+            hidenotifications=args.hidenotifications,
+            hidestyles=args.hidestyles)
 
     def raw_data(self):
         # Make sure fingerprint isn't blacklisted.

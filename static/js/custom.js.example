@@ -6,7 +6,7 @@ $(function () {
     const isSearchMarkerMovable = false // Let the user move the scan location marker around. Doesn't do anything without --no-fixed-location. Default: false.
     const showLocationMarker = true // Show a marker on the visitor's location. Default: false.
     const isLocationMarkerMovable = false // Let the user move the visitor marker around. Default: false.
-	
+
     const scaleByRarity = true // Enable scaling by rarity. Default: true.
     const upscalePokemon = false // Enable upscaling of certain Pokemon (upscaledPokemon and notify list). Default: false.
     const upscaledPokemon = [] // Add Pokémon IDs separated by commas (e.g. [1, 2, 3]) to upscale icons. Default: [].
@@ -14,6 +14,12 @@ $(function () {
     // Google Analytics property ID. Leave empty to disable.
     // Looks like 'UA-XXXXX-Y'.
     const analyticsKey = ''
+
+    // customLink Button Settings
+    const customLinkButtonEnabled = false // Default: False.
+    const customLinkTitle = 'Test' // Default: ''
+    const customLinkUrl = 'http://www.test.com' // Default: ''
+
 
     // Hide Presets
 
@@ -163,12 +169,12 @@ $(function () {
     const clusterGridSizeMobile = 60 // Default: 60.
 
     // Rarities Sprites
-    const rarityCommon = 12 // Default: 1. 
-    const rarityUncommon = 20 // Default: 1. 
-    const rarityRare = 100 // Default: 1. 
-    const rarityVeryRare = 147 // Default: 1. 
-    const rarityUltraRare = 149 // Default: 1. 
-    const rarityNewSpawn = 151 // Default: 1. 
+    const rarityCommon = 12 // Default: 1.
+    const rarityUncommon = 20 // Default: 1.
+    const rarityRare = 100 // Default: 1.
+    const rarityVeryRare = 147 // Default: 1.
+    const rarityUltraRare = 149 // Default: 1.
+    const rarityNewSpawn = 151 // Default: 1.
 
     // Process Pokémon in chunks to improve responsiveness.
     const processPokemonChunkSize = 100 // Default: 100
@@ -218,7 +224,7 @@ $(function () {
     Store.set('rarityVeryRare', rarityVeryRare)
     Store.set('rarityUltraRare', rarityUltraRare)
     Store.set('rarityNewSpawn', rarityNewSpawn)
-	
+
     if (typeof window.orientation !== 'undefined' || isMobileDevice()) {
         Store.set('maxClusterZoomLevel', maxClusterZoomLevelMobile)
         Store.set('clusterZoomOnClick', clusterZoomOnClickMobile)
@@ -240,6 +246,13 @@ $(function () {
         ga('create', analyticsKey, 'auto')
         ga('send', 'pageview')
     }
+
+    // customLink Button
+
+	if (customLinkButtonEnabled === true) {
+	var htmlCode = '<a href="' + customLinkUrl + '" id="customLinkButton" style="float: right;"><span class="label">' + customLinkTitle + '</span></a>'
+document.getElementById('statsToggle').insertAdjacentHTML('afterend', htmlCode);
+	}
 
     // Show MOTD.
     if (motdEnabled && motdShowOnPages.indexOf(currentPage) !== -1) {

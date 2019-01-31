@@ -22,6 +22,15 @@
 #pogo-assets:                   # Directory pointing to optional PogoAssets root directory. (default=None)
 #generate-images                # Use ImageMagick to generate dynamic icons on demand.
 
+# Hide Submenus
+###############
+
+#hidesearch                     # Hides the options submenu 'Location & Search settings'. (Default=False)
+#hidemarkers                    # Hides the options submenu 'Marker Settings'. (Default=False)
+#hidenotifications              # Hides the options submenu 'Notifications Settings'. (Default=False)
+#hidestyles                     # Hides the options submenu 'Style Settings'. (Default=False)
+
+
 # Required settings
 ###################
 

@@ -260,6 +260,18 @@ def get_args():
                         help=('Locale for Pokemon names (check' +
                               ' static/dist/locales for more).'),
                         default='en')
+    parser.add_argument('-hds', '--hidesearch',
+                        help='Hides search submenu.',
+                        action='store_true', default=False)
+    parser.add_argument('-hdm', '--hidemarkers',
+                        help='Hides markers submenu.',
+                        action='store_true', default=False)
+    parser.add_argument('-hdn', '--hidenotifications',
+                        help='Hides notifications submenu.',
+                        action='store_true', default=False)
+    parser.add_argument('-hdy', '--hidestyles',
+                        help='Hides style settings submenu.',
+                        action='store_true', default=False)
     parser.add_argument('-mn', '--mapname',
                         help=('Name for the map in the HTML'),
                         type=str, default='RocketMap')
